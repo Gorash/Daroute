@@ -1,0 +1,20 @@
+{
+  "name": "Daroute",
+  "version": "0.0",
+  "description": "Daroute",
+  "main": "main.js",
+  "engines": {
+    "node": ">= v0.6.16"
+  },
+  "dependencies": {
+    "socket.io": ">= 0.9.16",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Gorash/Daroute.git"
+  },
+  "author": {
+    "name": "Christophe Matthieu",
+    "email": "tof.matthieu@gmail.com"
+  },
+}
