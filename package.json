@@ -3,6 +3,16 @@
   "version": "0.0",
   "description": "Daroute",
   "main": "main.js",
+  "keywords": [
+    "routes",
+    "path",
+    "get",
+    "post",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
   "engines": {
     "node": ">= v0.6.16"
   },
