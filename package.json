@@ -1,8 +1,8 @@
 {
   "name": "Daroute",
-  "version": "0.0",
+  "version": "1.0",
   "description": "Daroute",
-  "main": "main.js",
+  "main": "index.js",
   "keywords": [
     "routes",
     "path",
@@ -17,7 +17,7 @@
     "node": ">= v0.6.16"
   },
   "dependencies": {
-    "socket.io": ">= 0.9.16",
+    "socket.io": ">= 0.9.16"
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,5 @@
   "author": {
     "name": "Christophe Matthieu",
     "email": "tof.matthieu@gmail.com"
-  },
+  }
 }
