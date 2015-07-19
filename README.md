@@ -20,6 +20,18 @@ Here is an example on how to use it:
 
 ```js
 var Daroute = require('Daroute');
+require('http').createServer(Daroute.handler).listen(8080);
+
+// try with http://127.0.0.1:8080/toto
+Daroute.add('/toto', function (request, response) {
+  response.end("your html content");
+});
+```
+
+And a other example:
+
+```js
+var Daroute = require('Daroute');
 
 // define a new logger (level 4 = display debug, info, warning and error log)
 var logger = new Daroute.builderLogger("main.js", {level: 4});
@@ -45,7 +57,6 @@ Daroute.add('/static/<path>', false);
 // define route
 // try with http://127.0.0.1:8080
 Daroute.add('/', '/index', function index (request, response) {
-  response.writeHead(200);
   response.end("index");
 });
 
@@ -53,7 +64,6 @@ Daroute.add('/', '/index', function index (request, response) {
 // try with http://127.0.0.1:8080/user-65
 Daroute.add('/<user:bobo>', function user_route (request, response) {
   // request.params contain: { get: {}, route: { bobo: 65 }, post: {} }
-  response.writeHead(200);
   response.end("user id = " + request.params.route.bobo);
 });
 ```
@@ -75,7 +85,6 @@ Arguments is on request.params
 
 ```js
 Daroute.add('/my/route/<int:lou>/<bobo>/truc<list_int:pepe>', function test (request, response) { 
-   response.writeHead(200);
    response.end("Hello Word !"); 
 });
 // try with http://127.0.0.1:8080/my/route/55/--*98fs+%20--/truc5,6,8,78
@@ -86,11 +95,9 @@ Daroute.add('/my/route/<int:lou>/<bobo>/truc<list_int:pepe>', function test (req
 
 ```js
 Daroute.add('/my/route/<lou>', function lou1 (request, response) { 
-   response.writeHead(200);
    response.end("Hello Word !"); 
 });
 Daroute.add('/my/route/<int:lou>', function lou2 (request, response) { 
-   response.writeHead(200);
    response.end("Hello Word !"); 
 });
 // try with http://127.0.0.1:8080/my/route/55
@@ -111,7 +118,7 @@ Daroute.addPathRegExp('user', 'user-[0-9]*', function user_parser (value) {
 
 // define route with custom exeption
 Daroute.add('/<user:bobo>/<user:user>', function user_route (request, response) {
-  response.writeHead(200);
+  response.writeHead(202);
   response.end("user id = " + request.params.route.bobo);
 });
 // try with http://127.0.0.1:8080/user-65/user-45?user=77
