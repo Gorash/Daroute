@@ -54,15 +54,6 @@ Daroute.addPathRegExp('user', 'user-[0-9]*', function user_parser (value) {
 // define a static route
 Daroute.add('/static/<path>');
 
-// other e.g.:
-// define a static route who use an other folder
-// add some options (allow encoding in function of the browser 'deflate' or 'gzip';
-// cache the route result server side; add headers to have client cache)
-Daroute.add('/static_alpha/<path>', __dirname + '/alpha_v2/' ,{
-  'encoding': true,
-  'cache': true,
-  'headers': {'Cache-Control': 'max-age=2592000, cache, store'}
-});
 
 // define route
 // try with http://127.0.0.1:8080
@@ -78,7 +69,7 @@ Daroute.add('/<user:bobo>', function user_route (request, response) {
 });
 ```
 
-## add routes and routes for static files
+## add routes
 
 When a user arrive on this adresse path, Daroute found the most complex route, if no route found throw a NotFound error.
 If Daroute found a route, the callback is false, the path is served like a static files.
@@ -99,6 +90,23 @@ Daroute.add('/my/route/<int:lou>/<bobo>/truc<list_int:pepe>', function test (req
 });
 // try with http://127.0.0.1:8080/my/route/55/--*98fs+%20--/truc5,6,8,78
 // request.params contain { get: {}, route: {lou: 55, bobo: '--*98fs+%20--', pepe: [5,6,8,78]}, post: {} }
+```
+
+### route options: encoding, cache, headers...
+
+You can define for all routes (static or not) some options like:
+* encoding: automatically encode the result (static file or method result) in function of the client browser ('deflate' or 'gzip').
+* cache: cache the route result server side (useful for performance especially for minifications or encoding)
+* headers: set default headers (you can overwrite it in the function of the no static routes)
+* ...
+
+```js
+// define a static route link to an other alpha folder
+Daroute.add('/static_alpha/<path>', __dirname + '/alpha_v2/' ,{
+  'encoding': true,
+  'cache': true,
+  'headers': {'Cache-Control': 'max-age=2592000, cache, store'}
+});
 ```
 
 ### route are sorted by complexity
