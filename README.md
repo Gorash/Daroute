@@ -51,8 +51,18 @@ Daroute.addPathRegExp('user', 'user-[0-9]*', function user_parser (value) {
 });
 
 
-// define static route
-Daroute.add('/static/<path>', false);
+// define a static route
+Daroute.add('/static/<path>');
+
+// other e.g.:
+// define a static route who use an other folder
+// add some options (allow encoding in function of the browser 'deflate' or 'gzip';
+// cache the route result server side; add headers to have client cache)
+Daroute.add('/static_alpha/<path>', __dirname + '/alpha_v2/' ,{
+  'encoding': true,
+  'cache': true,
+  'headers': {'Cache-Control': 'max-age=2592000, cache, store'}
+});
 
 // define route
 // try with http://127.0.0.1:8080
