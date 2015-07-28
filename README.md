@@ -147,27 +147,27 @@ Daroute.add('/<record(user):bobo>/<record(user):user>', function user_route (req
 // request.params contain: { get: {user: '77'}, route: { bobo: [DB object 65], user: [DB object 45] }, post: {} }
 ```
 
-## onBegin, onEnd, onError
+## onRequest, onBegin, onEnd, onError, onFinish
 
 Daroute call all your onBegin method before call a route method
 Daroute call all your onEnd method if they are no error in the route method
 Daroute call all your onError method if they are a least one error catched in the route method
 
 ```js
+Daroute.onRequest(function DB_open () {
+  // eg. open your DB and begin a transaction (if you don't use the database in parser, better to connect into onBegin)
+});
 Daroute.onBegin(function DB_open () {
-  // eg. open your DB and begin a transaction
-  // ...
-  console.log("onBegin opening");
+  // eg. set/get few datas in DB
 });
 Daroute.onEnd(function DB_commited () {
   // eg. commit your data's transaction into your DB
-  // ...
-  console.log("onSuccess commited");
 });
 Daroute.onError(function DB_roolback () {
   // eg. roolback your transaction
-  // ...
-  console.log("onUnseccess roolback");
+});
+Daroute.onFinish(function DB_roolback () {
+  // eg. close DB connexion
 });
 ```
 
