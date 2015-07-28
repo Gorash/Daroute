@@ -124,23 +124,27 @@ Daroute.add('/my/route/<int:lou>', function lou2 (request, response) {
 
 ### defined your specific parser for your custom types
 
+The parsers receive all the regex match as first value and can receive an optional second argument from the data surrounded by parentheses in the route
+
 ```js
 // add a new path parser for the routes
-Daroute.addPathRegExp('user', 'user-[0-9]*', function user_parser (value) {
+// value: slug (semantic URL to improve SEO for eg.)
+// model: data surrounded by parentheses in the route
+Daroute.addPathRegExp('record', '[^/]+-[0-9]*', function record_parser (value, model) {
   var id = parseInt( value.split("-")[1] );
   // eg. select in DB
-  // ... if the user haven't access: throw new Daroute.Exception.AccessDenied("User %s is not logged", id);
+  // ... if the user haven't access: throw new Daroute.Exception.AccessDenied("You can't access to %s[%s]", model, id);
   // ...
-  return id;
+  return record;
 });
 
 // define route with custom exeption
-Daroute.add('/<user:bobo>/<user:user>', function user_route (request, response) {
+Daroute.add('/<record(user):bobo>/<record(user):user>', function user_route (request, response) {
   response.writeHead(202);
   response.end("user id = " + request.params.route.bobo);
 });
-// try with http://127.0.0.1:8080/user-65/user-45?user=77
-// request.params contain: { get: {user: '77'}, route: { bobo: 65, user: 45 }, post: {} }
+// try with http://127.0.0.1:8080/name-user-65/other-name-45?user=77
+// request.params contain: { get: {user: '77'}, route: { bobo: [DB object 65], user: [DB object 45] }, post: {} }
 ```
 
 ## onBegin, onEnd, onError
