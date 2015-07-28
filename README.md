@@ -3,18 +3,15 @@ Daroute.js
 
 ## Introduction
 
-Daroute is a node.js routing module and path analizer module.
-Daroute can
-* define simple routes (route dynamique or static)
-* define types of path arguments and callback (by default: int, float, list_int...)
-* find the most complex route (nb of types + nb of args + number of "/"), if no route found throw a NotFound error
-* define new mineType used to serve static files
-* trigger for onBegin before call a route method
-* trigger for onEnd method if they are no error in the route method
-* trigger for onError method if they are a least one error catched in the route method
+Daroute is a node.js routing framework and path analizer module.
+
+* define simple or dynamic routes (with or without parser)
+* find the best route who match, if no route found throw a NotFound error
+* mineType used to serve static files
 * define custom errors
 * handle error
 * complete and colored console log
+* ...
 
 Here is an example on how to use it:
 
@@ -27,45 +24,23 @@ Daroute.add('/toto', function (request, response) {
   response.end("your html content");
 });
 ```
-
-And a other example:
+Example for static files:
 
 ```js
-var Daroute = require('Daroute');
+// http://127.0.0.1:8080/static/sound/test.mp3 serve the file /v1_alpha/static/sound/test.mp3
+Daroute.add('/static/<path:path>.(png|mp3|ogg|wav|css|js)', __dirname + '/v1_alpha/');
+```
 
-// define a new logger (level 4 = display debug, info, warning and error log)
-var logger = new Daroute.builderLogger("main.js", {level: 4});
+Example for dynamic urls:
 
-// launch server with handler
-require('http').createServer(Daroute.handler).listen(8080);
-logger.info('Server running at http://127.0.0.1:8080/');
-
-
-// add a new path parser for the routes
-Daroute.addPathRegExp('user', 'user-[0-9]*', function user_parser (value) {
-  var id = parseInt( value.split("-")[1] );
-  // eg. select in DB
-  // ... if the user haven't access: throw new Daroute.Exception.AccessDenied("User %s is not logged", id);
-  // ...
-  return id;
-});
-
-
-// define a static route
-Daroute.add('/static/<path>');
-
-
-// define route
-// try with http://127.0.0.1:8080
-Daroute.add('/', '/index', function index (request, response) {
-  response.end("index");
-});
-
-// define route with custom exeption
-// try with http://127.0.0.1:8080/user-65
-Daroute.add('/<user:bobo>', function user_route (request, response) {
-  // request.params contain: { get: {}, route: { bobo: 65 }, post: {} }
-  response.end("user id = " + request.params.route.bobo);
+```js
+// try with /forum/name-of-the-question-1/5,78?order=desc
+Daroute.add('/forum/<record(forum.question):forum>/<list_int:range>', function (request, response) {
+  console.log(request.params.get);
+  // {order: 'desc'}
+  console.log(request.params.route);
+  // {forum: [Object forum.question:1], range: [5,78]}
+  response.end("your html content");
 });
 ```
 
@@ -102,7 +77,8 @@ You can define for all routes (static or not) some options like:
 
 ```js
 // define a static route link to an other alpha folder
-Daroute.add('/static_alpha/<path>', __dirname + '/alpha_v2/' ,{
+// http://127.0.0.1:8080/static/sound/test.mp3 serve the file /v1_alpha/static/sound/test.mp3
+Daroute.add('/static/<path:path>.(png|mp3|ogg|wav|css|js)', __dirname + '/v1_alpha/', {
   'encoding': true,
   'cache': true,
   'headers': {'Cache-Control': 'max-age=2592000, cache, store'}
@@ -128,7 +104,7 @@ The parsers receive all the regex match as first value and can receive an option
 
 ```js
 // add a new path parser for the routes
-// value: slug (semantic URL to improve SEO for eg.)
+// value: path who match with the regexp (semantic URL to improve SEO for eg.)
 // model: data surrounded by parentheses in the route
 Daroute.addPathRegExp('record', '[^/]+-[0-9]*', function record_parser (value, model) {
   var id = parseInt( value.split("-")[1] );
