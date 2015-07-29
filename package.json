@@ -1,7 +1,7 @@
 {
-  "name": "Daroute",
-  "version": "1.0",
-  "description": "Daroute",
+  "name": "daroute",
+  "version": "1.0.0",
+  "description": "Daroute is a node.js routing framework and path analizer module.",
   "main": "index.js",
   "keywords": [
     "routes",
