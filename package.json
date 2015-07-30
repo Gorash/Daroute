@@ -1,6 +1,6 @@
 {
   "name": "daroute",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Daroute is a node.js routing framework and path analizer module.",
   "main": "index.js",
   "keywords": [
@@ -26,5 +26,6 @@
   "author": {
     "name": "Christophe Matthieu",
     "email": "tof.matthieu@gmail.com"
-  }
+  },
+  "license": "MIT"
 }
